@@ -393,11 +393,7 @@ Completed MVP with:
 
 # Screenshots
 
-## Dashboard
 
-![Dashboard](./screenshots/dashboard.png)
-
----
 
 ## AI Chat Input
 
