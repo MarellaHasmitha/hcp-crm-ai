@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addInteraction,clearExtractedData} from "../store/interactionSlice";
-import { saveInteraction } from "../api/interactionApi";
+import { addInteraction,clearExtractedData,deleteInteraction} from "../store/interactionSlice";
+import { saveInteraction,deleteInteractionById } from "../api/interactionApi";
 
 function InteractionForm() {
    const initialFormData = {
@@ -99,6 +99,16 @@ async function handleSubmit(e) {
         }
     }
     
+
+  async function handleDelete(id) {
+  try {
+    await deleteInteractionById(id);
+    dispatch(deleteInteraction(id));
+  } catch (error) {
+    console.error("Failed to delete interaction:", error);
+    alert("Failed to delete interaction.");
+  }
+}
     
   return (
      <div className="rounded-2xl bg-white p-6 shadow-md">
@@ -278,7 +288,15 @@ async function handleSubmit(e) {
                     {interaction.topicsDiscussed}
                   </p>
                 </div>
+            
 
+               <button
+                type="button"
+                onClick={() => handleDelete(interaction.id)}
+                className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700"
+              >
+                Delete
+              </button>
               </div>
         ))}
     </div>

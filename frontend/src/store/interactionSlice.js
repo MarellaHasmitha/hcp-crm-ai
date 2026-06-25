@@ -26,6 +26,12 @@ const interactionSlice = createSlice({
         state.extractedData = null;
       },
 
+     deleteInteraction: (state, action) => {
+      state.interactions = state.interactions.filter(
+          (interaction) => interaction.id !== action.payload
+        );
+      }, 
+
   },
 });
 
@@ -34,6 +40,7 @@ export const {
    setExtractedData,
    setInteractions,
    clearExtractedData, 
+    deleteInteraction,
   } = interactionSlice.actions;
 
 export default interactionSlice.reducer;

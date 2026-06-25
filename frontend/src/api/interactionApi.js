@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://ai-crm-backend-xjsq.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function saveInteraction(interactionData) {
   const response = await axios.post(
@@ -14,6 +14,14 @@ export async function saveInteraction(interactionData) {
 export async function getInteractions() {
   const response = await axios.get(
     `${API_BASE_URL}/api/interactions`
+  );
+
+  return response.data;
+}
+
+export async function deleteInteractionById(id) {
+  const response = await axios.delete(
+    `${API_BASE_URL}/api/interactions/${id}`
   );
 
   return response.data;

@@ -10,6 +10,7 @@ export default function ChatPanel() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
+  const [aiInsights, setAiInsights] = useState(null);
 
  async function handleSend() {
 
@@ -45,6 +46,16 @@ export default function ChatPanel() {
     setMessage("");
   }
 }
+
+dispatch(setExtractedData(response.extractedData));
+
+setAiInsights({
+  extractedData: response.extractedData,
+  sentimentResult: response.sentimentResult,
+  followupSuggestion: response.followupSuggestion,
+  interactionSummary: response.interactionSummary,
+  complianceStatus: response.complianceStatus,
+});
   return (
     <div className="rounded-2xl bg-white p-6 shadow-md">
       <h2 className="text-xl font-semibold text-slate-800">
@@ -87,6 +98,66 @@ export default function ChatPanel() {
         {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
       </div>
+
+
+      {aiInsights && (
+  <div className="mt-6 space-y-3">
+    <h3 className="text-lg font-semibold text-slate-800">
+      AI Workflow Results
+    </h3>
+
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+      <p className="text-sm font-semibold text-slate-700">
+        1. Extracted Interaction
+      </p>
+      <p className="mt-1 text-sm text-slate-600">
+        HCP: {aiInsights.extractedData.hcpName || "Not detected"}
+      </p>
+      <p className="text-sm text-slate-600">
+        Topic: {aiInsights.extractedData.topicsDiscussed || "Not detected"}
+      </p>
     </div>
+
+    <div className="rounded-xl border border-green-200 bg-green-50 p-4">
+      <p className="text-sm font-semibold text-green-700">
+        2. Sentiment Analysis
+      </p>
+      <p className="mt-1 text-sm text-green-700">
+        {aiInsights.sentimentResult}
+      </p>
+    </div>
+
+    <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+      <p className="text-sm font-semibold text-blue-700">
+        3. Follow-up Suggestion
+      </p>
+      <p className="mt-1 text-sm text-blue-700">
+        {aiInsights.followupSuggestion}
+      </p>
+    </div>
+
+    <div className="rounded-xl border border-purple-200 bg-purple-50 p-4">
+      <p className="text-sm font-semibold text-purple-700">
+        4. Interaction Summary
+      </p>
+      <p className="mt-1 text-sm text-purple-700 whitespace-pre-line">
+        {aiInsights.interactionSummary}
+      </p>
+    </div>
+
+    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+      <p className="text-sm font-semibold text-amber-700">
+        5. Compliance Check
+      </p>
+      <p className="mt-1 text-sm text-amber-700">
+        {aiInsights.complianceStatus}
+      </p>
+    </div>
+  </div>
+)}
+    </div>
+
+
+     
   );
 }

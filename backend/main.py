@@ -72,8 +72,31 @@ def get_interactions():
 def extract_ai_data(payload: dict):
     message = payload.get("message", "")
 
-    extracted_data = extract_interaction_data(message)
+    result = extract_interaction_data(message)
 
     return {
-        "extractedData": extracted_data
+        "extractedData": result["extracted_data"],
+        "sentimentResult": result["sentiment_result"],
+        "followupSuggestion": result["followup_suggestion"],
+        "interactionSummary": result["interaction_summary"],
+        "complianceStatus": result["compliance_status"]
     }
+
+
+@app.delete("/api/interactions/{interaction_id}")
+def delete_interaction(interaction_id: int):
+    db = SessionLocal()
+
+    interaction = db.query(InteractionModel).filter(
+        InteractionModel.id == interaction_id
+    ).first()
+
+    if not interaction:
+        db.close()
+        return {"message": "Interaction not found"}
+
+    db.delete(interaction)
+    db.commit()
+    db.close()
+
+    return {"message": "Interaction deleted successfully"}
